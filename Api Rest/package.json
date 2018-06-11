@@ -10,6 +10,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
     "dotenv": "^2.0.0",
     "express": "^4.16.2",
@@ -18,8 +19,8 @@
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.6.2",
     "mongoose-gridfs": "^0.1.0",
-    "cookie-parser": "^1.4.3",
     "serve-favicon": "^2.4.3",
+    "socket.io": "^2.1.1",
     "winston": "^2.2.0"
   },
   "devDependencies": {
@@ -49,5 +50,4 @@
     "sinon": "^1.17.2",
     "xunit-file": "0.0.9"
   }
-
 }
