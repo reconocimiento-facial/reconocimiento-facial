@@ -14,9 +14,11 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SensorManager } from 'NativeModules';
 import * as Progress from 'react-native-progress';
-const SHAKE_THRESHOLD = 800;
+
+const SHAKE_THRESHOLD = 1000; // Velocidad de movimiento
 const SHAKE_TIME = 4; // Segundos
-const PAGE_NAME = 'Inicio'
+const PAGE_NAME = 'Inicio'; // Nombre pagina 
+
 export default class HomePage extends PureComponent {
   static navigationOptions = {
     drawerLabel: PAGE_NAME,
