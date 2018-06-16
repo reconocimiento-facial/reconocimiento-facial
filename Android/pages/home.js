@@ -15,7 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SensorManager } from 'NativeModules';
 import * as Progress from 'react-native-progress';
 
-const SHAKE_THRESHOLD = 1000; // Velocidad de movimiento
+const SHAKE_THRESHOLD = 5000; // Velocidad de movimiento
 const SHAKE_TIME = 4; // Segundos
 const PAGE_NAME = 'Inicio'; // Nombre pagina 
 
@@ -74,7 +74,7 @@ export default class HomePage extends PureComponent {
       }
       const speed = Math.abs(x + y + z - last.x - last.y - last.z) / diffTime * 10000;
       if (speed > SHAKE_THRESHOLD) {
-        console.warn('shake');
+        console.warn('shake' + speed);
         this.setState({shake: true});
         SensorManager.stopAccelerometer();
       }
@@ -87,18 +87,20 @@ export default class HomePage extends PureComponent {
   openMenu = () => {
     this.props.navigation.openDrawer();
   }
-  header = (<Header
-        leftComponent={
-        <TouchableOpacity onPress={this.openMenu}>
-          <Ionicons name='md-menu' size={25} color={'#fff'}/>
-        </TouchableOpacity>
-        }
-        centerComponent={
-          <Text style={styles.textHeader}>
-            {PAGE_NAME}
-          </Text>
-        }
-      />)
+  header = (
+    <Header
+      backgroundColor='#3D6DCC'
+      innerContainerStyles={{ padding: 0}}
+      leftComponent={
+        <Ionicons raised onPress={this.openMenu} name='md-menu' size={25} color={'#fff'}/>
+      }
+      centerComponent={
+        <Text style={styles.textHeader}>
+          {PAGE_NAME}
+        </Text>
+      }
+    />
+  )
   render() {
     const shake = this.state.shake + '';
     const progress = this.state.progress / SHAKE_TIME;
@@ -146,12 +148,6 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     fontSize: 20,
-    textAlign: 'center',
-    color: '#fff'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    color: '#fff',
   },
 });
