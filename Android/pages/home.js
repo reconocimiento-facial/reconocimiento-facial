@@ -14,6 +14,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SensorManager } from 'NativeModules';
 import * as Progress from 'react-native-progress';
+import io from 'socket.io-client';
 
 const SHAKE_THRESHOLD = 5000; // Velocidad de movimiento
 const SHAKE_TIME = 4; // Segundos
@@ -35,6 +36,19 @@ export default class HomePage extends PureComponent {
       progress: 0,
       person: 'misa'
     };
+    this.StartListen();
+  }
+  StartListen = () => {
+    const socket = io('http://192.168.88.60:3000');
+    socket.on('connect', () => {
+      console.warn('connect');
+      socket.emit('app-send-want', {
+        hola: 'hola'
+      })
+      socket.on('server-can-enter', () => {
+        console.warn('server-can-enter');
+      });
+    });
   }
   CheckLight = () => {
     SensorManager.startLightSensor(100);
