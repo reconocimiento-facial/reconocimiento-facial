@@ -17,7 +17,7 @@ export default class AboutPage extends PureComponent {
   static navigationOptions = {
     drawerLabel: PAGE_NAME,
     drawerIcon: ({ tintColor }) => (
-      < Ionicons name = 'md-information-circle' size={25} color={tintColor} />
+      <Ionicons name = 'md-information-circle' size={25} color={tintColor} />
     ),
   };
   openMenu = () => {
@@ -25,10 +25,10 @@ export default class AboutPage extends PureComponent {
   }
   header = (
     <Header
+      backgroundColor='#3D6DCC'
+      innerContainerStyles={{ padding: 0}}
       leftComponent={
-      <TouchableOpacity onPress={this.openMenu}>
-        <Ionicons name='md-menu' size={25} color={'#fff'}/>
-      </TouchableOpacity>
+        <Ionicons raised onPress={this.openMenu} name='md-menu' size={25} color={'#fff'}/>
       }
       centerComponent={
         <Text style={styles.textHeader}>
