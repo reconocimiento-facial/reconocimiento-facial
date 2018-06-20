@@ -27,6 +27,8 @@ function piezoSong(piezo) {
   });
 }
 module.exports = {
-	closeDoor,
-	openDoor
-}
+  closeDoor,
+  openDoor,
+	printPerson,
+  piezoSong
+};
