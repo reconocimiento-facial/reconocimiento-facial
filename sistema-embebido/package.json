@@ -1,0 +1,23 @@
+{
+  "name": "se",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "events": "^3.0.0",
+    "face-recognition": "^0.8.1",
+    "fs": "0.0.1-security",
+    "johnny-five": "^0.15.0",
+    "opencv4nodejs": "^4.5.2",
+    "path": "^0.12.7",
+    "raspi-io": "^9.0.0",
+    "socket.io-client": "^2.1.1"
+  }
+}
