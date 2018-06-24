@@ -1,17 +1,20 @@
 const io = require('socket.io-client');
+const config = require('../config');
 const socket = io(config.API);
 const events = require('./events-emitter');
-const status = require('./status');
-
+const status = require('../status');
 
 socket.on('connect', () => {
-    socket.on('person-want-enter', (data) => {
-        events.emit('person-want-enter', data);
+    socket.on('person-want-enter', (person) => {
+        events.emit('person-want-enter', person);
     });
-    events.on('door-open', function() {
+    socket.on('force-open', () => {
+        events.emit('force-open');
+    })
+    events.on('door-open', () =>  {
         socket.emit('door-open', status);
     });
-    events.on('door-close', function(data) {
-        socket.emit('door-close');
+    events.on('door-close', function() {
+        socket.emit('door-close', status);
     });
 });

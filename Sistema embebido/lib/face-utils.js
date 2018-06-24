@@ -5,11 +5,11 @@ const path = require('path');
 const fs = require('fs');
 const recognizer = fr.AsyncFaceRecognizer();
 const detector = fr.AsyncFaceDetector();
-const config = require('./config');
+const config = require('../config');
 const vCap = new cv.VideoCapture(config.CAMPORT);
 
 function loadModels() {
-    const modelState = require('./models/models.json');
+    const modelState = require('../models/models.json');
     recognizer.load(modelState);
 }
 function checkFaceByImage(pathDir){
@@ -73,14 +73,12 @@ function checkFaceByFrame(frame) {
 }
 
 function checkFace() {
-    return new Promise((res, rej) => {
         let frame = vCap.read();
         if (frame.empty) {
             vCap.reset();
             frame = vCap.read();
         }
         return checkFaceByFrame(frame);
-    } );
 }
 module.exports = {
     createModel,
