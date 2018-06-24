@@ -8,6 +8,9 @@ socket.on('connect', () => {
     socket.on('person-want-enter', (person) => {
         events.emit('person-want-enter', person);
     });
+    socket.on('force-open', () => {
+        events.emit('force-open');
+    })
     events.on('door-open', () =>  {
         socket.emit('door-open', status);
     });

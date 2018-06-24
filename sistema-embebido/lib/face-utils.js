@@ -73,14 +73,12 @@ function checkFaceByFrame(frame) {
 }
 
 function checkFace() {
-    return new Promise((res, rej) => {
         let frame = vCap.read();
         if (frame.empty) {
             vCap.reset();
             frame = vCap.read();
         }
         return checkFaceByFrame(frame);
-    } );
 }
 module.exports = {
     createModel,
