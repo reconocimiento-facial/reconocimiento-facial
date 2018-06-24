@@ -37,10 +37,10 @@ board.on('ready', () => {
 	if (status.doorOpen || status.checking ) {
 		return;	
 	}
-	/*if(status.detectedMotion == false) {
+	if(status.detectedMotion == false) {
 		printMessege(lcd, 'Movimiento no', 'detectado');
 		return;
-	}*/
+	}
     	printMessege(lcd, 'Escaneando cara de ', person);
 	status.checking = true;
 	checkFace()
