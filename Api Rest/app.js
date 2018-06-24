@@ -41,7 +41,7 @@ mongoose.connect('mongodb://' + process.env.MONGODB_HOST + ':' + process.env.MON
         logger.error('Error mongoose connection: ', error);
     });
 
-app.use(publicPath.pathRegex, extractJwt);
+// app.use(publicPath.pathRegex, extractJwt);
 
 const buildBaucis = require('./build-baucis');
 const baucisInstance = buildBaucis();
