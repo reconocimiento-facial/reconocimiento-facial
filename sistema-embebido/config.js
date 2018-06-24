@@ -1,5 +1,5 @@
 const config = {
-    API: 'http://192.168.88.60:3000',
+    API: 'http://192.168.0.22:3000',
     CAMPORT: 0,
     unknownThreshold: 0.65
 }

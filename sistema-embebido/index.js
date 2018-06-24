@@ -15,9 +15,6 @@ const board = new five.Board({
    io: new Raspi() 
 });
 
-events.on('person-want-enter', (data) => {
-    status.person = data.person;
-});
 
 
 //loadModels();
@@ -28,7 +25,14 @@ board.on('ready', () => {
     //const piezo = new five.Piezo({ pin: 'P1-16' });
     const lcd = new five.LCD({ controller: 'LCM1602' });
 
-    openDoor(servo, lcd);
+    events.on('person-want-enter', (person) => {
+	if (status.doorOpen) {
+		return;	
+	}
+    	printMessege(lcd, person);
+    });
+
+    openDoor(servo, led);
     //board.repl.inject({ piezo });
 
     /*motion.on('calibrated', function(data) {
