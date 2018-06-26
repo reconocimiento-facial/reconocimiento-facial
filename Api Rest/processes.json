@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+        "name"   : "app-soa",
+        "script": "npm",
+        "args" : "start"
+    }
+  ]
+}
