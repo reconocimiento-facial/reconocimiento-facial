@@ -10,6 +10,8 @@ import {
   Header
 } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import io from 'socket.io-client';
+import config from '../config';
 
 const PAGE_NAME = 'Acerca de'
 
@@ -20,6 +22,16 @@ export default class AboutPage extends PureComponent {
       <Ionicons name = 'md-information-circle' size={25} color={tintColor} />
     ),
   };
+  constructor(props) {
+    super(props);
+    const socket = io(config.API);
+    socket.on('connect', () => {
+    });
+    this.state = {
+      person: 'misael',
+      socket
+    };
+  }
   openMenu = () => {
     this.props.navigation.openDrawer();
   }
@@ -37,6 +49,11 @@ export default class AboutPage extends PureComponent {
       }
     />
   )
+
+  forceOpen = () => {
+    this.state.socket.emit('force-open');
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -45,6 +62,12 @@ export default class AboutPage extends PureComponent {
           <Text style={styles.welcome}>
             About
           </Text>
+            <Button
+              raised
+              icon={{ name: 'cached' }}
+              onPress={this.forceOpen}
+              title=' Detectar Shake '
+            />
         </View>
       </View>
     );

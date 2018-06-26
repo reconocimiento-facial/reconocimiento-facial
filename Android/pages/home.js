@@ -16,8 +16,9 @@ import { SensorManager } from 'NativeModules';
 import * as Progress from 'react-native-progress';
 import io from 'socket.io-client';
 import config from '../config';
-const SHAKE_THRESHOLD = 5000; // Velocidad de movimiento
-const LIGHT_THRESHOLD = 100; // Velocidad de movimiento
+
+const SHAKE_THRESHOLD = 4000; // Valor minimo de Velocidad de movimiento
+const LIGHT_THRESHOLD = 100; // Valor minimo de Cantidad de luz
 const SHAKE_TIME = 4; // Segundos
 const LIGHT_TIME = 4; // Segundos
 const PAGE_NAME = 'Inicio'; // Nombre pagina 
@@ -31,6 +32,9 @@ export default class HomePage extends PureComponent {
   };
   constructor(props) {
     super(props);
+    const socket = io(config.API);
+    socket.on('connect', () => {
+    });
     this.state = {
       accelerometer: null,
       lastUpdate: null,
@@ -38,19 +42,12 @@ export default class HomePage extends PureComponent {
       light: false,
       shakeProgress: 0,
       lightProgress: 0,
-      person: 'misa'
+      person: 'misael',
+      doorOpen: false,
+      socket
     };
-    this.StartListen();
   }
-  StartListen = () => {
-    const socket = io(config.API);
-    socket.on('connect', () => {
 
-      socket.on('server-can-enter', () => {
-        console.warn('server-can-enter');
-      });
-    });
-  }
   emitWantEnter() {
     const { person } = this.state;
     socket.emit('app-send-want', {
@@ -113,7 +110,7 @@ export default class HomePage extends PureComponent {
       }
       this.setState({ accelerometer, lastUpdate: curTime });
     });
-    SensorManager.startAccelerometer(100); // To start the accelerometer with a minimum delay of 100ms between events.
+    SensorManager.startAccelerometer(100);
     this.CheckShakeProgress();
   }
   
@@ -142,7 +139,7 @@ export default class HomePage extends PureComponent {
       resultIcon = (<Ionicons reverse name='md-checkmark-circle-outline' size={50} color={'#7F9939'}/>)
     } 
     return  (
-      <View buttonStyle={styles.btn}>
+      <View style={styles.btn}>
         <Button
           raised
           icon={{ name: 'cached' }}
@@ -166,7 +163,7 @@ export default class HomePage extends PureComponent {
       resultIcon = (<Ionicons reverse name='md-checkmark-circle-outline' size={50} color={'#7F9939'}/>)
     } 
     return  (
-      <View buttonStyle={styles.btn}>
+      <View style={styles.btn}>
         <Button
           raised
           icon={{ name: 'highlight' }}
@@ -182,33 +179,50 @@ export default class HomePage extends PureComponent {
       </View>
     )
   }
+  openDoor = () => {
+    const { person } = this.state;
+    this.state.socket.emit('want-to-enter', person);
+  }
+  wantEnterOption = () => {
+    const { person, shake, light } = this.state;
+    if(!shake || !light) {
+      return;
+    }
+    return ( 
+      <View style={styles.btn}>
+        <Button
+          onPress={this.openDoor}
+          raised
+          icon={{ name: 'open-in-new' }}
+          title='Abrir' 
+        />
+      </View>
+    )
+  }
   render() {
-
     return (
       <View style={styles.container}>
         {this.header}
         <View style={styles.content}>
+          <View>
+            <Text>
+              Entrar como:
+            </Text>
+          </View>
           <Picker
             selectedValue={this.state.person}
             onValueChange={(itemValue) => this.setState({person: itemValue})}>
-            <Picker.Item label="Misael" value="misa" />
+            <Picker.Item label="Misael" value="misael" />
             <Picker.Item label="Guillermo" value="guille" />
+            <Picker.Item label="Leonel" value="leonel" />
           </Picker>
           <View style={styles.row}>
             {this.btnAccelerometer()}
             {this.btnLight()}
           </View>
-          <View style={styles.row}>
-            <View>
-
-            </View>
+          <View style={styles.content}>
+            {this.wantEnterOption()}
           </View>
-          {/* 
-            <Text>
-              {this.state.person}
-            </Text>
-            <Text>{shake}</Text>
-          */}
         </View>
       </View>
     );
@@ -244,6 +258,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btn: {
-    marginTop: 2,
+    marginTop: 1,
   }
 });
