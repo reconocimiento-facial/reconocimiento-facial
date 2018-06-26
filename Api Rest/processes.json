@@ -2,7 +2,7 @@
   "apps": [
     {
         "name"   : "app-soa",
-        "script": "api.js"
+        "script": "node ./bin/www"
     }
   ]
 }
