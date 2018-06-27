@@ -45,6 +45,7 @@ board.on('ready', () => {
 	status.checking = true;
 	checkFace()
 	    .then((prediction) => {
+		console.log(prediction, status.unknownThreshold);
 		status.checking = false;
 		if(prediction.className !== 'unknown') {
 		    console.log('Nombre -> ', prediction.className)
