@@ -22,7 +22,7 @@ const LIGHT_THRESHOLD = 100; // Valor minimo de Cantidad de luz
 const SHAKE_TIME = 4; // Segundos
 const LIGHT_TIME = 4; // Segundos
 const PAGE_NAME = 'Inicio'; // Nombre pagina 
-
+const MIN_STEPS = 5; // Cantidad de pasos minimos
 export default class HomePage extends PureComponent {
   static navigationOptions = {
     drawerLabel: PAGE_NAME,
@@ -33,7 +33,7 @@ export default class HomePage extends PureComponent {
   constructor(props) {
     super(props);
     const socket = io(config.API);
-    socket.on('connect', () => {
+      socket.on('connect', () => {
     });
     this.state = {
       accelerometer: null,
@@ -44,8 +44,11 @@ export default class HomePage extends PureComponent {
       lightProgress: 0,
       person: 'misael',
       doorOpen: false,
+      steps: 0,
+      checkSteps: false,
       socket
     };
+    this.StepCounter();
   }
 
   emitWantEnter() {
@@ -113,7 +116,22 @@ export default class HomePage extends PureComponent {
     SensorManager.startAccelerometer(100);
     this.CheckShakeProgress();
   }
-  
+  StepCounter = () => {
+    let { steps, checkSteps } = this.state;
+    SensorManager.startStepCounter(500);
+    DeviceEventEmitter .addListener('StepCounter',(data) => {
+      if (steps == 0) {
+        steps = data.steps;
+        return this.setState({
+          steps,
+        })
+      }
+      this.setState({
+        steps: data.steps - steps,
+        checkSteps: true
+      });
+    });
+  }
   openMenu = () => {
     this.props.navigation.openDrawer();
   }
@@ -184,8 +202,8 @@ export default class HomePage extends PureComponent {
     this.state.socket.emit('want-to-enter', person);
   }
   wantEnterOption = () => {
-    const { person, shake, light } = this.state;
-    if(!shake || !light) {
+    const { person, shake, light, steps, checkSteps } = this.state;
+    if (!shake || !light || steps < MIN_STEPS || !checkSteps) {
       return;
     }
     return ( 
