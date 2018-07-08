@@ -27,16 +27,14 @@ function piezoSong(piezo) {
   });
 }
 function printMessege(lcd, messege, optionalText) {
-    	lcd.clear();
-    	lcd.cursor(0, 1);
+  lcd.clear();
+  lcd.cursor(0, 1);
 	lcd.print(messege);
-
 	if(optionalText) {
-	    	lcd.cursor(1, 1);
+    lcd.cursor(1, 1);
 		lcd.print(optionalText);
 	}
-        console.log(messege, optionalText || '');
-
+  console.log(messege, optionalText || '');
 }
 function closeDoor(servo) {
 	 servo.to(180, 1000);

@@ -6,7 +6,7 @@ const fs = require('fs');
 const recognizer = fr.AsyncFaceRecognizer();
 const detector = fr.AsyncFaceDetector();
 const config = require('../config');
-const vCap = new cv.VideoCapture(config.CAMPORT);
+const vCap = new cv.VideoCapture(config.CAMPORT, 1);
 
 function loadModels() {
     const modelState = require('../models/models.json');
@@ -33,7 +33,7 @@ function addFaces(pathDir){
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 next();
             });
         }
@@ -59,6 +59,7 @@ function createModel(pathDir, classname) {
                 });
         });
 }
+
 function checkFaceByFrame(frame) {
     const cvImg = fr.CvImage(frame)
     const imageRgb = fr.cvImageToImageRGB(cvImg);
@@ -73,12 +74,20 @@ function checkFaceByFrame(frame) {
 }
 
 function checkFace() {
-        let frame = vCap.read();
-        if (frame.empty) {
-            vCap.reset();
-            frame = vCap.read();
-        }
-        return checkFaceByFrame(frame);
+    let frame = vCap.read();
+	const intvl = setInterval(() => {
+	    let otherframe = vCap.read();
+	    if (otherframe.empty) {
+	      vCap.reset();
+	      return clearInterval(intvl);
+	    }
+	    const key = cv.waitKey(10);
+	    done = key !== -1 && key !== 255;
+	    if (done) {
+	      return clearInterval(intvl);
+	    }
+  	}, 0);
+    return checkFaceByFrame(frame);
 }
 module.exports = {
     createModel,
