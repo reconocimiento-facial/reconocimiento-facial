@@ -33,7 +33,7 @@ function addFaces(pathDir){
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
                 next();
             });
         }
@@ -74,8 +74,7 @@ function checkFaceByFrame(frame) {
 }
 
 function checkFace() {
-        let frame = vCap.read();
-
+    let frame = vCap.read();
 	const intvl = setInterval(() => {
 	    let otherframe = vCap.read();
 	    if (otherframe.empty) {
@@ -88,7 +87,7 @@ function checkFace() {
 	      return clearInterval(intvl);
 	    }
   	}, 0);
-        return checkFaceByFrame(frame);
+    return checkFaceByFrame(frame);
 }
 module.exports = {
     createModel,
